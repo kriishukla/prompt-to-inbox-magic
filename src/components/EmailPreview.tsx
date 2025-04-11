@@ -39,10 +39,19 @@ const EmailPreview: React.FC<EmailPreviewProps> = ({
   };
 
   const handleSendEmail = async () => {
-    if (!recipients.length || !subject || !generatedEmail) {
+    if (!recipients || recipients.length === 0) {
       toast({
-        title: "Missing Fields",
-        description: "Please make sure all fields are filled before sending.",
+        title: "Missing Recipients",
+        description: "Please add at least one recipient email address.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!subject || !generatedEmail) {
+      toast({
+        title: "Missing Content",
+        description: "Please make sure subject and email body are filled before sending.",
       });
       return;
     }
@@ -58,6 +67,8 @@ const EmailPreview: React.FC<EmailPreviewProps> = ({
     setIsSending(true);
 
     try {
+      console.log("Attempting to send email to recipients:", recipients);
+      
       // Send email to each recipient
       for (const recipientEmail of recipients) {
         const templateParams = {
@@ -90,6 +101,11 @@ const EmailPreview: React.FC<EmailPreviewProps> = ({
       setIsSending(false);
     }
   };
+
+  // Debug log for recipients in EmailPreview
+  useEffect(() => {
+    console.log("Recipients in EmailPreview:", recipients);
+  }, [recipients]);
 
   return (
     <div className="space-y-4">
@@ -140,7 +156,7 @@ const EmailPreview: React.FC<EmailPreviewProps> = ({
       <div>
         <label className="block text-sm font-medium mb-1">Recipients</label>
         <div className="bg-gray-100 p-2 rounded text-sm">
-          {recipients && recipients.length > 0 ? recipients.join(", ") : "No recipients"}
+          {Array.isArray(recipients) && recipients.length > 0 ? recipients.join(", ") : "No recipients"}
         </div>
       </div>
 

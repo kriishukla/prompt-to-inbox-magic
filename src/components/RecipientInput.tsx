@@ -1,5 +1,5 @@
 
-import React, { useState, KeyboardEvent } from "react";
+import React, { useState, KeyboardEvent, useEffect } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,11 @@ interface RecipientInputProps {
 
 const RecipientInput: React.FC<RecipientInputProps> = ({ recipients, setRecipients }) => {
   const [inputValue, setInputValue] = useState<string>("");
+  
+  // Debug log
+  useEffect(() => {
+    console.log("Recipients in RecipientInput:", recipients);
+  }, [recipients]);
 
   const addRecipient = (email: string) => {
     const trimmedEmail = email.trim();
@@ -37,7 +42,7 @@ const RecipientInput: React.FC<RecipientInputProps> = ({ recipients, setRecipien
       return;
     }
 
-    setRecipients([...recipients, trimmedEmail]);
+    setRecipients(prev => [...prev, trimmedEmail]);
     setInputValue("");
   };
 
@@ -58,7 +63,7 @@ const RecipientInput: React.FC<RecipientInputProps> = ({ recipients, setRecipien
   return (
     <div className="space-y-2">
       <div className="flex flex-wrap gap-2 p-2 border rounded-md min-h-10 bg-background">
-        {recipients.map((email, index) => (
+        {Array.isArray(recipients) && recipients.map((email, index) => (
           <Badge key={index} variant="secondary" className="flex items-center gap-1 px-2 py-1">
             {email}
             <X

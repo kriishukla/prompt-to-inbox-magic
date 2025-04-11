@@ -49,6 +49,9 @@ const Index = () => {
     }
   };
 
+  // Debug log for recipients
+  console.log("Current recipients:", recipients);
+
   return (
     <div className="container py-8">
       <h1 className="text-3xl font-bold mb-6 text-center">AI Email Generator</h1>
