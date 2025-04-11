@@ -1,73 +1,97 @@
-# Welcome to your Lovable project
+# AI Email Generator
 
-## Project info
+A modern web application that uses the Groq API to generate professional email content and allows users to send emails via EmailJS.
 
-**URL**: https://lovable.dev/projects/ae4041ce-bf4a-46cf-a231-792aadadb97f
+## Table of Contents
 
-## How can I edit this code?
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Setup and Installation](#setup-and-installation)
+- [Usage Guide](#usage-guide)
+- [Development Process](#development-process)
+- [Future Improvements](#future-improvements)
+- [Contributing](#contributing)
+- [License](#license)
 
-There are several ways of editing your application.
+## Overview
 
-**Use Lovable**
+AI Email Generator is a streamlined tool for professionals who need to craft well-written emails quickly. The application leverages the power of Groq's large language models to generate email content based on user prompts, and integrates with EmailJS for sending the generated emails.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/ae4041ce-bf4a-46cf-a231-792aadadb97f) and start prompting.
+The application follows a two-step process:
+1. **Compose** - Enter a prompt describing the email you want to create
+2. **Preview & Send** - Review the generated email, add recipients, and send it
 
-Changes made via Lovable will be committed automatically to this repo.
+## Features
 
-**Use your preferred IDE**
+- **AI-Powered Email Generation**: Use Groq's language models to craft professional emails
+- **Intuitive Two-Tab Interface**: Separate compose and preview tabs for a streamlined workflow
+- **Recipient Management**: Add and remove email recipients with validation
+- **Custom Email Editing**: Modify the generated subject and body before sending
+- **EmailJS Integration**: Send emails directly from the application
+- **Persistent Settings**: API keys and configuration are saved in localStorage
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Tech Stack
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Frontend
+- **React**: Library for building user interfaces
+- **TypeScript**: Typed JavaScript for better development experience
+- **React Router**: Client-side routing
+- **shadcn/ui**: Component library based on Radix UI and Tailwind CSS
+- **Tailwind CSS**: Utility-first CSS framework
+- **Lucide React**: Icon library
 
-Follow these steps:
+### State Management
+- **React Hooks**: For local component state
+- **localStorage**: For persisting configuration between sessions
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### API Integration
+- **Groq API**: For AI-powered email generation
+- **EmailJS**: For sending emails directly from the frontend
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Development Tools
+- **Vite**: Next-generation frontend tooling
+- **React Query**: For data fetching and caching
+- **ESLint**: Linting utility
+- **Prettier**: Code formatter
+## Setup and Installation
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 🚀 Usage Guide
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+### 1. **Compose Tab**
 
-**Edit a file directly in GitHub**
+- Enter your **Groq API key** in the provided field (or it will be auto-loaded from localStorage if previously entered).
+- Write a prompt describing the email content you need.  
+  _Example_: `"Write a follow-up email to schedule a meeting with the marketing team about the new product launch"`
+- Click **"Generate Email"** to create your email content.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### 2. **Preview Tab**
 
-**Use GitHub Codespaces**
+- Add recipients using the **recipient input field** at the top (enter email and press `Enter`).
+- Configure **EmailJS credentials**:
+  - Service ID
+  - Template ID
+  - User ID
+- Review and edit the **generated subject and email body** as needed.
+- Click **"Send Email"** to deliver your message to all recipients.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## 🛠 Development Process
 
-This project is built with:
+### Design Approach
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+This application was designed with a focus on **user experience** and **workflow efficiency**, using a multi-step layout to guide users through the process.
 
-## How can I deploy this project?
+- **Separation of Concerns**:  
+  Divided into “Compose” and “Preview” tabs to focus on individual tasks.
+- **Progressive Disclosure**:  
+  Only show information and options as needed.
+- **User-Friendly Form Controls**:  
+  Includes components like `RecipientInput` for ease of use.
+- **Responsive Design**:  
+  Fully functional on both desktop and mobile devices.
 
-Simply open [Lovable](https://lovable.dev/projects/ae4041ce-bf4a-46cf-a231-792aadadb97f) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
