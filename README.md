@@ -1,6 +1,6 @@
 # AI Email Generator
 
-A modern web application that uses the Groq API to generate professional email content and allows users to send emails via EmailJS.\\
+A modern web application that uses the Groq API to generate professional email content and allows users to send emails via EmailJS.\
 Deployed Link- https://prompt-to-inbox-magic.lovable.app/
 
 ## Table of Contents
