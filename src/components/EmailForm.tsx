@@ -1,17 +1,13 @@
-
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import RecipientInput from "./RecipientInput";
 import { Loader2 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 
 interface EmailFormProps {
-  recipients: string[];
-  setRecipients: React.Dispatch<React.SetStateAction<string[]>>;
   prompt: string;
   setPrompt: React.Dispatch<React.SetStateAction<string>>;
   onGenerate: () => Promise<void>;
@@ -21,8 +17,6 @@ interface EmailFormProps {
 }
 
 const EmailForm: React.FC<EmailFormProps> = ({
-  recipients,
-  setRecipients,
   prompt,
   setPrompt,
   onGenerate,
@@ -81,11 +75,6 @@ const EmailForm: React.FC<EmailFormProps> = ({
                 https://console.groq.com/keys
               </a>
             </p>
-          </div>
-
-          <div className="space-y-2">
-            <Label>Recipients</Label>
-            <RecipientInput recipients={recipients} setRecipients={setRecipients} />
           </div>
 
           <div className="space-y-2">
