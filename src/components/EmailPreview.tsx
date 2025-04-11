@@ -1,14 +1,14 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { sendEmail } from "@/utils/email";
+import RecipientInput from "./RecipientInput";
 import emailjs from "emailjs-com";
 
 interface EmailPreviewProps {
   recipients: string[];
+  setRecipients: React.Dispatch<React.SetStateAction<string[]>>;
   generatedEmail: string;
   setGeneratedEmail: (value: string) => void;
   subject: string;
@@ -17,6 +17,7 @@ interface EmailPreviewProps {
 
 const EmailPreview: React.FC<EmailPreviewProps> = ({
   recipients,
+  setRecipients,
   generatedEmail,
   setGeneratedEmail,
   subject,
@@ -109,6 +110,11 @@ const EmailPreview: React.FC<EmailPreviewProps> = ({
 
   return (
     <div className="space-y-4">
+      <div className="space-y-2 mb-4">
+        <h3 className="text-sm font-medium">Recipients</h3>
+        <RecipientInput recipients={recipients} setRecipients={setRecipients} />
+      </div>
+      
       <div className="bg-yellow-50 p-4 rounded border border-yellow-200 mb-4">
         <h3 className="font-medium text-sm mb-2">EmailJS Configuration</h3>
         <div className="grid gap-2">
@@ -150,13 +156,6 @@ const EmailPreview: React.FC<EmailPreviewProps> = ({
               EmailJS Dashboard
             </a>
           </p>
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1">Recipients</label>
-        <div className="bg-gray-100 p-2 rounded text-sm">
-          {Array.isArray(recipients) && recipients.length > 0 ? recipients.join(", ") : "No recipients"}
         </div>
       </div>
 
