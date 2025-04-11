@@ -1,20 +1,15 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Send, Loader2 } from "lucide-react";
-import { toast } from "@/components/ui/use-toast";
-import { sendEmail } from "@/utils/email";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 
 interface EmailPreviewProps {
   recipients: string[];
   generatedEmail: string;
-  setGeneratedEmail: React.Dispatch<React.SetStateAction<string>>;
+  setGeneratedEmail: (value: string) => void;
   subject: string;
-  setSubject: React.Dispatch<React.SetStateAction<string>>;
+  setSubject: (value: string) => void;
 }
 
 const EmailPreview: React.FC<EmailPreviewProps> = ({
@@ -24,105 +19,87 @@ const EmailPreview: React.FC<EmailPreviewProps> = ({
   subject,
   setSubject,
 }) => {
+  const { toast } = useToast();
   const [isSending, setIsSending] = useState(false);
 
-  const handleSend = async () => {
-    if (recipients.length === 0) {
+  const handleSendEmail = async () => {
+    if (!recipients.length || !subject || !generatedEmail) {
       toast({
-        variant: "destructive",
-        title: "No Recipients",
-        description: "Please add at least one recipient.",
-      });
-      return;
-    }
-
-    if (!subject.trim()) {
-      toast({
-        variant: "destructive",
-        title: "Subject Required",
-        description: "Please enter a subject for your email.",
-      });
-      return;
-    }
-
-    if (!generatedEmail.trim()) {
-      toast({
-        variant: "destructive",
-        title: "Email Body Required",
-        description: "Please generate or write an email body.",
+        title: "Missing Fields",
+        description: "Please make sure all fields are filled before sending.",
       });
       return;
     }
 
     setIsSending(true);
-    
+
     try {
-      const result = await sendEmail({
-        to: recipients,
-        subject: subject,
-        body: generatedEmail,
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: recipients,
+          subject,
+          body: generatedEmail,
+        }),
       });
-      
-      // If successful, you could clear form or provide additional feedback
-      if (result) {
-        console.log("Email sent successfully");
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast({
+          title: "Email sent!",
+          description: "Your email was successfully delivered.",
+        });
+      } else {
+        toast({
+          title: "Error sending email",
+          description: data.error || "An unknown error occurred.",
+        });
       }
+    } catch (error: any) {
+      toast({
+        title: "Network error",
+        description: error.message || "Failed to send email.",
+      });
     } finally {
       setIsSending(false);
     }
   };
 
-  if (!generatedEmail) {
-    return null;
-  }
-
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Email Preview</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="emailSubject">Subject</Label>
-          <Input
-            id="emailSubject"
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-            placeholder="Email subject"
-          />
+    <div className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium mb-1">Recipients</label>
+        <div className="bg-gray-100 p-2 rounded text-sm">
+          {recipients.join(", ") || "No recipients"}
         </div>
+      </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="emailBody">Email Body</Label>
-          <Textarea
-            id="emailBody"
-            value={generatedEmail}
-            onChange={(e) => setGeneratedEmail(e.target.value)}
-            placeholder="Email content"
-            className="h-64 resize-y font-mono text-sm"
-          />
-        </div>
-      </CardContent>
-      <CardFooter>
-        <Button 
-          onClick={handleSend} 
-          disabled={isSending || recipients.length === 0}
-          className="w-full"
-        >
-          {isSending ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Sending...
-            </>
-          ) : (
-            <>
-              Send Email
-              <Send className="ml-2 h-4 w-4" />
-            </>
-          )}
-        </Button>
-      </CardFooter>
-    </Card>
+      <div>
+        <label className="block text-sm font-medium mb-1">Subject</label>
+        <Input
+          type="text"
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+          placeholder="Email subject"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-1">Email Body</label>
+        <Textarea
+          rows={10}
+          value={generatedEmail}
+          onChange={(e) => setGeneratedEmail(e.target.value)}
+          placeholder="Generated email content"
+        />
+      </div>
+
+      <Button onClick={handleSendEmail} disabled={isSending}>
+        {isSending ? "Sending..." : "Send Email"}
+      </Button>
+    </div>
   );
 };
 
