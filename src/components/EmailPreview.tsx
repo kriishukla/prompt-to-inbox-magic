@@ -140,7 +140,7 @@ const EmailPreview: React.FC<EmailPreviewProps> = ({
       <div>
         <label className="block text-sm font-medium mb-1">Recipients</label>
         <div className="bg-gray-100 p-2 rounded text-sm">
-          {recipients.join(", ") || "No recipients"}
+          {recipients && recipients.length > 0 ? recipients.join(", ") : "No recipients"}
         </div>
       </div>
 
