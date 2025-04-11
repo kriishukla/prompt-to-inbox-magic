@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import EmailForm from "@/components/EmailForm";
 import EmailPreview from "@/components/EmailPreview";
@@ -50,7 +49,9 @@ const Index = () => {
   };
 
   // Debug log for recipients
-  console.log("Current recipients:", recipients);
+  useEffect(() => {
+    console.log("Current recipients:", recipients);
+  }, [recipients]);
 
   return (
     <div className="container py-8">
@@ -64,8 +65,6 @@ const Index = () => {
         
         <TabsContent value="compose">
           <EmailForm 
-            recipients={recipients}
-            setRecipients={setRecipients}
             prompt={prompt}
             setPrompt={setPrompt}
             onGenerate={handleGenerateEmail}
@@ -78,6 +77,7 @@ const Index = () => {
         <TabsContent value="preview">
           <EmailPreview 
             recipients={recipients}
+            setRecipients={setRecipients}
             generatedEmail={generatedEmail}
             setGeneratedEmail={setGeneratedEmail}
             subject={emailSubject}
