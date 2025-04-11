@@ -41,8 +41,6 @@ export const cleanEmailContent = (emailContent: string): string => {
 // Simulate sending email (in a real app, this would connect to a backend service)
 export const sendEmail = async (emailData: EmailData): Promise<boolean> => {
   try {
-    // In a real app, this would be an API call to your backend
-    // For this minimal frontend implementation, we'll simulate a successful send
     console.log("Sending email to:", emailData.to);
     console.log("Subject:", emailData.subject);
     console.log("Body:", emailData.body);
@@ -53,7 +51,7 @@ export const sendEmail = async (emailData: EmailData): Promise<boolean> => {
     // Show success message
     toast({
       title: "Email Sent Successfully",
-      description: `Your email was sent to ${emailData.to.length} recipient(s).`,
+      description: `Your email was sent to ${emailData.to.join(", ")}.`,
     });
     
     return true;

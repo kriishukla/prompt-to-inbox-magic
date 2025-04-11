@@ -57,11 +57,16 @@ const EmailPreview: React.FC<EmailPreviewProps> = ({
     setIsSending(true);
     
     try {
-      await sendEmail({
+      const result = await sendEmail({
         to: recipients,
         subject: subject,
         body: generatedEmail,
       });
+      
+      // If successful, you could clear form or provide additional feedback
+      if (result) {
+        console.log("Email sent successfully");
+      }
     } finally {
       setIsSending(false);
     }
@@ -104,9 +109,17 @@ const EmailPreview: React.FC<EmailPreviewProps> = ({
           disabled={isSending || recipients.length === 0}
           className="w-full"
         >
-          {isSending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isSending ? "Sending..." : "Send Email"}
-          {!isSending && <Send className="ml-2 h-4 w-4" />}
+          {isSending ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Sending...
+            </>
+          ) : (
+            <>
+              Send Email
+              <Send className="ml-2 h-4 w-4" />
+            </>
+          )}
         </Button>
       </CardFooter>
     </Card>
